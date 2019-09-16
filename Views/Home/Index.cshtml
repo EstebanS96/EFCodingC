@@ -47,29 +47,13 @@
                                 { "data": "timeToStart" },
                                 { "data": "endDate" },
                                 { "data": "isActive" },
-                                { "data": "Credits" }]
-
-            });
-            });
-            $('#datatable').DataTable({
-                "ajax": {
-                    "url": "/Home/projectsXusers",
-                    "type": "GET",
-                    "datatype": "json",
-                    "data": { userId: 3 },
-                },
-                "columns": [{ "data": "projectID" },
-                                { "data": "startDate" },
-                                { "data": "timeToStart" },
-                                { "data": "endDate" },
-                                { "data": "isActive" },
-                                { "data": "Credits" }
-                ],
-                
+                        { "data": "Credits" }],
                 "paging": false,
                 "searching": false
 
             });
+            });
+            
         });
     </script>
 

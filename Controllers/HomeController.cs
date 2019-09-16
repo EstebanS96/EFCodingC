@@ -86,7 +86,15 @@ namespace EFCodingC.Controllers
             ProjectsVM x = new ProjectsVM();
             x.projectID = P.projectID;
             x.startDate = P.startDate.ToString();
-            x.isActive = P.isActive;
+            if (P.isActive[0] == 1)
+            {
+                x.isActive = "Active";
+            }
+            else
+            {
+                x.isActive = "Inactive";
+            }
+            
             System.TimeSpan days = P.startDate - P.assignedDate;
             if (days.Days > 0)
             {

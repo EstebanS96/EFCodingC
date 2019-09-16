@@ -11,7 +11,7 @@ namespace EFCodingC.Models.ViewModels
         public string startDate { get; set; }
         public string timeToStart { set; get; }
         public string endDate { get; set; }
-        public byte[] isActive { get; set; }
+        public string isActive { get; set; }
         public int Credits { get; set; }
 
         

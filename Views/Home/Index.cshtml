@@ -28,9 +28,35 @@
 </div>
 <script>
     $(document).ready(function () {
+        console.log("si cambia")
         $('nombres').change(function () {
             console.log("si cambia")
-            
+            $.ajax({
+            type: "Post",
+            url: "Home/projectsXusers",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            data: {userId:$(nombres).val()},
+                success: function (data) {
+                $('#datatable').DataTable({
+                    "processing": true, // for show progress bar  
+                    "serverSide": true, // for process server side  
+                    "filter": true, // this is for disable filter (search box)  
+                    "orderMulti": false, // for disable multiple column at once  
+                    "pageLength": 5, 
+                    "columns": [{ "data": "projectID" },
+                                { "data": "startDate" },
+                                { "data": "timeToStart" },
+                                { "data": "endDate" },
+                                { "data": "isActive" },
+                                { "data": "Credits" }]
+                });
+
+            },
+            error: function (err) {
+                alert(err);
+            }
+            })
         })
         
     });

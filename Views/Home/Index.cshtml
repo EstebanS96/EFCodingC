@@ -2,11 +2,36 @@
     ViewBag.Title = "Home Page";
     List<SelectListItem> items = (List<SelectListItem>)ViewBag.items;
 }
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
 
 <div class="row">
     <div class="col-md-12">
-        @Html.DropDownList("nombres",items,"Selecciona algo we", new { @class = "form-control" })
+        @Html.DropDownList("nombres", items, "Selecciona algo we", new { @class = "form-control" })
 
     </div>
+    <table id="datatable">
+        <thead>
+            <tr>
+                <th>Project Id</th>
+                <th>Start Date</th>
+                <th>Time to Start</th>
+                <th>End Date</th>
+                <th>Credits</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+
+    </table>
 
 </div>
+<script>
+    $(document).ready(function () {
+        $('nombres').change(function () {
+            console.log("si cambia")
+            
+        })
+        
+    });
+  </script>

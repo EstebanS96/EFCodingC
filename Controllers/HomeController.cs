@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Services;
 
 namespace EFCodingC.Controllers
 {
@@ -36,6 +37,35 @@ namespace EFCodingC.Controllers
 
             return View();
         }
+        [WebMethod]
+        public ActionResult projectsXusers(int userId)
+        {
+            List<ProjectViewModel> lst = null;
+            using (Models.codeChallengeEntities db = new Models.codeChallengeEntities())
+            {
+                lst =
+                    (from u in db.userProject 
+                     join p in db.Project on u.projectID equals p.id
+                     where u.userID == userId
+                     select new ProjectViewModel
+                     {
+                         
+                         projectID = p.id,
+                         isActive = u.isActive,
+                         startDate = p.startDate,
+                         endDate = p.endDate,
+                         Credits = p.Credits,
+                         assignedDate= u.assignedDate
+                         
+                     }).ToList();
+
+            }
+            List<ProjectsVM> lista = lst.ConvertAll(x =>
+            {
+                return projecttoTable(x);
+            });
+            return Json(lista, JsonRequestBehavior.AllowGet);
+        }
 
         public ActionResult About()
         {
@@ -49,6 +79,28 @@ namespace EFCodingC.Controllers
             ViewBag.Message = "Your contact page.";
 
             return View();
+        }
+
+        public ProjectsVM projecttoTable(ProjectViewModel P)
+        {
+            ProjectsVM x = new ProjectsVM();
+            x.projectID = P.projectID;
+            x.startDate = P.startDate;
+            x.isActive = P.isActive;
+            System.TimeSpan days = P.startDate - P.assignedDate;
+            if (days.Days > 0)
+            {
+
+                x.timeToStart = days.Days.ToString();
+            }
+            else
+            {
+                x.timeToStart = "Started";
+            }
+            x.endDate = P.endDate;
+            x.Credits = P.Credits;
+            return x;
+
         }
     }
 }

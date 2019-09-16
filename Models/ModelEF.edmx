@@ -1,0 +1,224 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="codeChallengeModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Project">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="startDate" Type="datetime2" Precision="0" Nullable="false" />
+          <Property Name="endDate" Type="datetime2" Precision="0" Nullable="false" />
+          <Property Name="Credits" Type="int" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'codeChallenge.dbo.userProject' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="userProject">
+          <Key>
+            <PropertyRef Name="userID" />
+            <PropertyRef Name="projectID" />
+            <PropertyRef Name="isActive" />
+            <PropertyRef Name="assignedDate" />
+          </Key>
+          <Property Name="userID" Type="int" Nullable="false" />
+          <Property Name="projectID" Type="int" Nullable="false" />
+          <Property Name="isActive" Type="binary" MaxLength="1" Nullable="false" />
+          <Property Name="assignedDate" Type="datetime2" Precision="0" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="firstName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="lastName" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__userProje__proje__412EB0B6">
+          <End Role="Project" Type="Self.Project" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="userProject" Type="Self.userProject" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Project">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="userProject">
+              <PropertyRef Name="projectID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__userProje__userI__4222D4EF">
+          <End Role="Users" Type="Self.Users" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="userProject" Type="Self.userProject" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="userProject">
+              <PropertyRef Name="userID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="codeChallengeModelStoreContainer">
+          <EntitySet Name="Project" EntityType="Self.Project" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="userProject" EntityType="Self.userProject" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [userProject].[userID] AS [userID], 
+    [userProject].[projectID] AS [projectID], 
+    [userProject].[isActive] AS [isActive], 
+    [userProject].[assignedDate] AS [assignedDate]
+    FROM [dbo].[userProject] AS [userProject]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK__userProje__proje__412EB0B6" Association="Self.FK__userProje__proje__412EB0B6">
+            <End Role="Project" EntitySet="Project" />
+            <End Role="userProject" EntitySet="userProject" />
+          </AssociationSet>
+          <AssociationSet Name="FK__userProje__userI__4222D4EF" Association="Self.FK__userProje__userI__4222D4EF">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="userProject" EntitySet="userProject" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="codeChallengeModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Project">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="startDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="endDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Credits" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="userProject" Relationship="Self.FK__userProje__proje__412EB0B6" FromRole="Project" ToRole="userProject" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="firstName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="lastName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="userProject" Relationship="Self.FK__userProje__userI__4222D4EF" FromRole="Users" ToRole="userProject" />
+        </EntityType>
+        <EntityType Name="userProject">
+          <Key>
+            <PropertyRef Name="userID" />
+            <PropertyRef Name="projectID" />
+            <PropertyRef Name="isActive" />
+            <PropertyRef Name="assignedDate" />
+          </Key>
+          <Property Name="userID" Type="Int32" Nullable="false" />
+          <Property Name="projectID" Type="Int32" Nullable="false" />
+          <Property Name="isActive" Type="Binary" MaxLength="1" FixedLength="true" Nullable="false" />
+          <Property Name="assignedDate" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="Project" Relationship="Self.FK__userProje__proje__412EB0B6" FromRole="userProject" ToRole="Project" />
+          <NavigationProperty Name="Users" Relationship="Self.FK__userProje__userI__4222D4EF" FromRole="userProject" ToRole="Users" />
+        </EntityType>
+        <Association Name="FK__userProje__proje__412EB0B6">
+          <End Role="Project" Type="Self.Project" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="userProject" Type="Self.userProject" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Project">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="userProject">
+              <PropertyRef Name="projectID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__userProje__userI__4222D4EF">
+          <End Role="Users" Type="Self.Users" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="userProject" Type="Self.userProject" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="userProject">
+              <PropertyRef Name="userID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="codeChallengeEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Project" EntityType="Self.Project" />
+          <EntitySet Name="Users" EntityType="Self.Users" />
+          <EntitySet Name="userProject" EntityType="Self.userProject" />
+          <AssociationSet Name="FK__userProje__proje__412EB0B6" Association="Self.FK__userProje__proje__412EB0B6">
+            <End Role="Project" EntitySet="Project" />
+            <End Role="userProject" EntitySet="userProject" />
+          </AssociationSet>
+          <AssociationSet Name="FK__userProje__userI__4222D4EF" Association="Self.FK__userProje__userI__4222D4EF">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="userProject" EntitySet="userProject" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="codeChallengeModelStoreContainer" CdmEntityContainer="codeChallengeEntities">
+          <EntitySetMapping Name="Project">
+            <EntityTypeMapping TypeName="codeChallengeModel.Project">
+              <MappingFragment StoreEntitySet="Project">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="startDate" ColumnName="startDate" />
+                <ScalarProperty Name="endDate" ColumnName="endDate" />
+                <ScalarProperty Name="Credits" ColumnName="Credits" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="codeChallengeModel.Users">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="firstName" ColumnName="firstName" />
+                <ScalarProperty Name="lastName" ColumnName="lastName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="userProject">
+            <EntityTypeMapping TypeName="codeChallengeModel.userProject">
+              <MappingFragment StoreEntitySet="userProject">
+                <ScalarProperty Name="userID" ColumnName="userID" />
+                <ScalarProperty Name="projectID" ColumnName="projectID" />
+                <ScalarProperty Name="isActive" ColumnName="isActive" />
+                <ScalarProperty Name="assignedDate" ColumnName="assignedDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

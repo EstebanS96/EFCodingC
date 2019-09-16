@@ -3,61 +3,75 @@
     List<SelectListItem> items = (List<SelectListItem>)ViewBag.items;
 }
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
+
 
 <div class="row">
     <div class="col-md-12">
-        @Html.DropDownList("nombres", items, "Selecciona algo we", new { @class = "form-control" })
+        @Html.DropDownList("nombres", items, "------------", new { @class = "form-control" })
 
     </div>
     <table id="datatable">
         <thead>
             <tr>
-                <th>Project Id</th>
-                <th>Start Date</th>
-                <th>Time to Start</th>
-                <th>End Date</th>
+                <th>projectID</th>
+                <th>startDate</th>
+                <th>timeToStart</th>
+                <th>endDate</th>
+                <th>isActive</th>
                 <th>Credits</th>
-                <th>Status</th>
             </tr>
         </thead>
 
     </table>
 
 </div>
-<script>
-    $(document).ready(function () {
-        console.log("si cambia")
-        $('nombres').change(function () {
-            console.log("si cambia")
-            $.ajax({
-            type: "Post",
-            url: "Home/projectsXusers",
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            data: {userId:$(nombres).val()},
-                success: function (data) {
-                $('#datatable').DataTable({
-                    "processing": true, // for show progress bar  
-                    "serverSide": true, // for process server side  
-                    "filter": true, // this is for disable filter (search box)  
-                    "orderMulti": false, // for disable multiple column at once  
-                    "pageLength": 5, 
-                    "columns": [{ "data": "projectID" },
+
+@section scripts{
+    
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
+    <script>
+
+        $(document).ready(function () {
+            $('#nombres').change(function () {
+                var x = $('#nombres').val()
+                table = $('#datatable').DataTable({
+                "destroy": true,
+                "ajax": {
+                    "url": "/Home/projectsXusers",
+                    "type": "GET",
+                    "datatype": "json",
+                    "data": {userId : x}
+                },
+                "columns": [{ "data": "projectID" },
                                 { "data": "startDate" },
                                 { "data": "timeToStart" },
                                 { "data": "endDate" },
                                 { "data": "isActive" },
                                 { "data": "Credits" }]
-                });
 
-            },
-            error: function (err) {
-                alert(err);
-            }
-            })
-        })
-        
-    });
-  </script>
+            });
+            });
+            $('#datatable').DataTable({
+                "ajax": {
+                    "url": "/Home/projectsXusers",
+                    "type": "GET",
+                    "datatype": "json",
+                    "data": { userId: 3 },
+                },
+                "columns": [{ "data": "projectID" },
+                                { "data": "startDate" },
+                                { "data": "timeToStart" },
+                                { "data": "endDate" },
+                                { "data": "isActive" },
+                                { "data": "Credits" }
+                ],
+                
+                "paging": false,
+                "searching": false
+
+            });
+        });
+    </script>
+
+}
+

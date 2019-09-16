@@ -64,7 +64,7 @@ namespace EFCodingC.Controllers
             {
                 return projecttoTable(x);
             });
-            return Json(lista, JsonRequestBehavior.AllowGet);
+            return Json(new { data = lista }, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult About()
@@ -85,7 +85,7 @@ namespace EFCodingC.Controllers
         {
             ProjectsVM x = new ProjectsVM();
             x.projectID = P.projectID;
-            x.startDate = P.startDate;
+            x.startDate = P.startDate.ToString();
             x.isActive = P.isActive;
             System.TimeSpan days = P.startDate - P.assignedDate;
             if (days.Days > 0)
@@ -97,7 +97,7 @@ namespace EFCodingC.Controllers
             {
                 x.timeToStart = "Started";
             }
-            x.endDate = P.endDate;
+            x.endDate = P.endDate.ToString();
             x.Credits = P.Credits;
             return x;
 
